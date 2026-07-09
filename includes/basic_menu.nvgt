@@ -1,0 +1,48 @@
+#include"menu_item.nvgt"
+#include"menu.nvgt"
+funcdef void item_callback();
+class basic_menu
+{
+dictionary items;
+menu m;
+void run()
+{
+int selected = m.run();
+string[] keys = items.get_keys();
+foreach(string key: keys)
+{
+int id = get_id(key);
+if(selected == id)
+{
+call(key);
+}
+}
+}
+private int get_id(string name)
+{
+menu_item@ item;
+items.get(name,item);
+return item.id;
+}
+private void call(string name)
+{
+menu_item@ item;
+items.get(name,item);
+item.callback();
+}
+void add_item(string name, item_callback@ func)
+{
+int id = m.add_item(name);
+menu_item item(id,func);
+items.set(name,item);
+}
+void intro()
+{
+m.intro();
+}
+void reset(bool all = false)
+{
+m.reset(all);
+}
+
+}
